@@ -13,7 +13,7 @@ export default function PropertyInput({
   level = 0,
 }: PropertyInputProps) {
   const [properties, setProperties] = useState<SchemaProperty[]>([
-    { name: "", type: "", required:false,  id: Math.random() },
+    { name: "", type: "", required: false, id: Math.random().toString(), description: "" },
   ]);
   const lastValidProperties = useRef<SchemaProperty[]>([]);
 
@@ -39,7 +39,7 @@ export default function PropertyInput({
     newProperties[index].required = !newProperties[index].required;
     setProperties(newProperties);
   };
-  
+
   const handleTypeChange = (index: number, type: string) => {
     const newProperties = [...properties];
     newProperties[index].type = type;
@@ -52,7 +52,16 @@ export default function PropertyInput({
   };
 
   const handleAddField = () => {
-    setProperties([...properties, { name: "", type: "", required:false, id: Math.random(), description:"" }]);
+    setProperties([
+      ...properties,
+      {
+        name: "",
+        type: "",
+        required: false,
+        id: Math.random().toString(),
+        description: "",
+      },
+    ]);
   };
 
   const handleRemoveField = (index: number) => {
@@ -81,7 +90,10 @@ export default function PropertyInput({
             />
             <div className="flex g-5 items-center">
               <p>Required:</p>
-              <Checkbox checked={property.required} onChange={() => handleRequiredChange(index)}/>
+              <Checkbox
+                checked={property.required}
+                onChange={() => handleRequiredChange(index)}
+              />
             </div>
             <Select
               value={property.type}

@@ -8,7 +8,7 @@ import {
   Typography,
 } from "@mui/material";
 import { Schema, SchemaProperty } from "../app/types";
-import AttributeTable from "./AttributeEditor";
+import AttributeTable from "./Attributes/AttributeEditor";
 
 type SchemaFormProps = {
   initialSchema: Schema;
@@ -106,7 +106,7 @@ export default function SchemaForm({
           {schema.properties.map((prop) => renderProperty(prop))}
         </div>
       )} */}
-      <AttributeTable attributes={schema.properties} />
+      <AttributeTable attributes={schema.properties} schemaId={schema.id} />
       <div className="flex justify-end space-x-2">
         <Button variant="outlined" onClick={onCancel}>
           Cancel

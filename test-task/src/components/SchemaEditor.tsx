@@ -4,15 +4,15 @@ import { useState } from "react";
 import SchemaForm from "./SchemaForm";
 import SchemaList from "./SchemaList";
 import { Box, Button, CardContent, Typography } from "@mui/material";
-import { useAppDispatch } from "../app/store";
+import { useAppDispatch, useAppSelector } from "../app/store";
 import { addSchemaToList, deleteSchemaFromList } from "../app/features/scheme";
 import { Schema } from "../app/types";
 
 export default function SchemaEditor() {
-  const [schemas, setSchemas] = useState<Schema[]>([]);
   const [isCreating, setIsCreating] = useState(false);
 
-  const dispatch = useAppDispatch()
+  const { schemas } = useAppSelector((state) => state.scheme);
+  const dispatch = useAppDispatch();
 
   const addNewSchema = () => {
     setIsCreating(true);
@@ -30,10 +30,10 @@ export default function SchemaEditor() {
   return (
     <Box
       sx={{
-        width: '100%',
+        width: "100%",
         mx: "auto",
         p: 3,
-        textAlign: 'start',
+        textAlign: "start",
       }}
     >
       <Typography variant="h4" component="h1" gutterBottom sx={{ mb: 4 }}>

@@ -20,9 +20,23 @@ export const schemeSlice = createSlice({
     deleteSchemaFromList: (state, action: PayloadAction<string>) => {
       state.schemas = state.schemas.filter((s) => s.id !== action.payload);
     },
+    resetAllAtributesFromSchema: (state, action: PayloadAction<string>) => {
+      const schemaId = action.payload;
+      const schemaIndex = state.schemas.findIndex(
+        (schema) => schema.id === schemaId
+      );
+
+      if (schemaIndex !== -1) {
+        state.schemas[schemaIndex].properties = [];
+      }
+    },
   },
 });
 
-export const { addSchemaToList, deleteSchemaFromList } = schemeSlice.actions;
+export const {
+  addSchemaToList,
+  deleteSchemaFromList,
+  resetAllAtributesFromSchema,
+} = schemeSlice.actions;
 
 export default schemeSlice.reducer;

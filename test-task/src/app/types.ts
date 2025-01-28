@@ -1,6 +1,6 @@
 
 export type SchemaProperty = {
-  id: number;
+  id: string;
   name: string;
   type: string;
   required: boolean;
