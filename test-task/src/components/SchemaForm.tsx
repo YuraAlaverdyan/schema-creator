@@ -3,7 +3,6 @@ import {
   Box,
   Button,
   FormLabel,
-  Input,
   TextField,
   Typography,
 } from "@mui/material";
@@ -21,7 +20,6 @@ type SchemaFormProps = {
 export default function SchemaForm({
   initialSchema,
   onSubmit,
-  onCancel,
 }: SchemaFormProps) {
   const [schema, setSchema] = useState<Schema>(initialSchema);
   const [isOpenModal, setIsOpenModal] = useState<boolean>(false);
@@ -130,7 +128,6 @@ export default function SchemaForm({
         children={
           <>
             <PropertyInput
-              existingProperties={schema.properties}
               onPropertiesChange={handlePropertiesChange}
             />
             <div className="flex justify-end space-x-2">

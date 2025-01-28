@@ -1,5 +1,3 @@
-"use client";
-
 import { useState } from "react";
 import SchemaForm from "./SchemaForm";
 import SchemaList from "./SchemaList";
