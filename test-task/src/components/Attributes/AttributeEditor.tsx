@@ -1,5 +1,3 @@
-"use client";
-
 import { useState } from "react";
 import {
   Box,
@@ -12,15 +10,10 @@ import {
   Paper,
   IconButton,
   Button,
-  Checkbox,
-  Collapse,
   Typography,
-  Tooltip,
 } from "@mui/material";
 import {
-  IconArrowDown,
   IconCode,
-  IconDownload,
   IconDragDrop,
   IconEdit,
   IconGrid3x3,
@@ -29,20 +22,16 @@ import {
 } from "@tabler/icons-react";
 import { SchemaProperty } from "../../app/types";
 import AttributeRow from "./AttributeRow";
-import { useAppDispatch } from "../../app/store";
-import { resetAllAtributesFromSchema } from "../../app/features/scheme";
-import PropertyInput from "../PropertyInput";
 
 export default function AttributeTable({
   attributes,
-  schemaId,
-  addAttribute
+  addAttribute,
+  handleClearAllAttribnutes
 }: {
   attributes: SchemaProperty[];
-  schemaId: string;
   addAttribute: () => void;
+  handleClearAllAttribnutes: () => void;
 }) {
-  const dispatch = useAppDispatch()
   const [expandedRows, setExpandedRows] = useState<{ [key: string]: boolean }>(
     {}
   );
@@ -52,10 +41,6 @@ export default function AttributeTable({
       ...prev,
       [id]: !prev[id],
     }));
-  };
-
-  const handleClearAll = () => {
-    dispatch(resetAllAtributesFromSchema(schemaId))
   };
 
   return (
@@ -106,7 +91,7 @@ export default function AttributeTable({
         </Button>
         <Button
           variant="contained"
-          onClick={handleClearAll}
+          onClick={handleClearAllAttribnutes}
           sx={{ bgcolor: "#ff9800", "&:hover": { bgcolor: "#f57c00" } }}
         >
           CLEAR ALL

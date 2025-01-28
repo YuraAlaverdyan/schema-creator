@@ -11,15 +11,18 @@ import { IconPlus, IconX } from "@tabler/icons-react";
 import { SchemaProperty } from "../app/types";
 
 type PropertyInputProps = {
+  existingProperties: SchemaProperty[];
   level?: number;
   onPropertiesChange: (properties: SchemaProperty[]) => void;
 };
 
 export default function PropertyInput({
+  existingProperties,
   level = 0,
   onPropertiesChange,
 }: PropertyInputProps) {
   const [properties, setProperties] = useState<SchemaProperty[]>([
+    ...existingProperties,
     {
       name: "",
       type: "",
@@ -153,6 +156,7 @@ export default function PropertyInput({
           {property.type === "object" && (
             <div className="pl-4 border-l-2 border-gray-300">
               <PropertyInput
+                existingProperties={properties}
                 onPropertiesChange={(nestedProps) =>
                   handleNestedPropertiesChange(index, nestedProps)
                 }

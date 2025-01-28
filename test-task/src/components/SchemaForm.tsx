@@ -10,7 +10,7 @@ import {
 import { Schema, SchemaProperty } from "../app/types";
 import AttributeTable from "./Attributes/AttributeEditor";
 import PropertyInput from "./PropertyInput";
-import { Modal } from "./modal";
+import { Modal } from "./Modal";
 
 type SchemaFormProps = {
   initialSchema: Schema;
@@ -44,6 +44,10 @@ export default function SchemaForm({
       ...schema,
       id: schema.id.startsWith("new-") ? Date.now().toString() : schema.id,
     });
+  };
+
+  const handleClearAllAttribnutes = () => {
+    setSchema((prev) => ({ ...prev, properties: [] }));
   };
 
   const renderProperty = (prop: SchemaProperty, level = 0) => (
@@ -117,20 +121,22 @@ export default function SchemaForm({
       )}
       <AttributeTable
         attributes={schema.properties}
-        schemaId={schema.id}
         addAttribute={() => setIsOpenModal(true)}
+        handleClearAllAttribnutes={handleClearAllAttribnutes}
       />
       <Modal
         open={isOpenModal}
         onClose={() => setIsOpenModal(false)}
         children={
           <>
-            <PropertyInput onPropertiesChange={handlePropertiesChange} />
+            <PropertyInput
+              existingProperties={schema.properties}
+              onPropertiesChange={handlePropertiesChange}
+            />
             <div className="flex justify-end space-x-2">
-              <Button variant="outlined" onClick={onCancel}>
-                Cancel
+              <Button variant="outlined" onClick={() => setIsOpenModal(false)}>
+                Close
               </Button>
-              <Button onClick={handleSubmit}>Save Schema</Button>
             </div>
           </>
         }
