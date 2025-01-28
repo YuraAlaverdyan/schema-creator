@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from "react";
-import { Button, Input, MenuItem, Select } from "@mui/material";
+import { Button, Checkbox, Input, MenuItem, Select } from "@mui/material";
 import { IconPlus, IconX } from "@tabler/icons-react";
 import { SchemaProperty } from "../app/types";
 
@@ -13,7 +13,7 @@ export default function PropertyInput({
   level = 0,
 }: PropertyInputProps) {
   const [properties, setProperties] = useState<SchemaProperty[]>([
-    { name: "", type: "" },
+    { name: "", type: "", required:false,  id: Math.random() },
   ]);
   const lastValidProperties = useRef<SchemaProperty[]>([]);
 
@@ -34,6 +34,12 @@ export default function PropertyInput({
     setProperties(newProperties);
   };
 
+  const handleRequiredChange = (index: number) => {
+    const newProperties = [...properties];
+    newProperties[index].required = !newProperties[index].required;
+    setProperties(newProperties);
+  };
+  
   const handleTypeChange = (index: number, type: string) => {
     const newProperties = [...properties];
     newProperties[index].type = type;
@@ -46,7 +52,7 @@ export default function PropertyInput({
   };
 
   const handleAddField = () => {
-    setProperties([...properties, { name: "", type: "" }]);
+    setProperties([...properties, { name: "", type: "", required:false, id: Math.random(), description:"" }]);
   };
 
   const handleRemoveField = (index: number) => {
@@ -73,6 +79,10 @@ export default function PropertyInput({
               placeholder="Property name"
               className="flex-grow"
             />
+            <div className="flex g-5 items-center">
+              <p>Required:</p>
+              <Checkbox checked={property.required} onChange={() => handleRequiredChange(index)}/>
+            </div>
             <Select
               value={property.type}
               onChange={(e) => handleTypeChange(index, e.target.value)}

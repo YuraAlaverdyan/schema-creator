@@ -3,28 +3,34 @@ import { ReactNode } from "react"
 import { Schema, SchemaProperty } from "../app/types"
 
 type SchemaListProps = {
-  schemas: Schema[]
-  onDelete: (id: string) => void
-}
+  schemas: Schema[];
+  onDelete: (id: string) => void;
+};
 
 export default function SchemaList({ schemas, onDelete }: SchemaListProps) {
   if (schemas.length === 0) {
-    return <p>No schemas created yet.</p>
+    return <p>No schemas created yet.</p>;
   }
 
   const renderPropertyRow = (prop: SchemaProperty, level = 0): ReactNode => (
     <>
       <TableRow key={prop.name}>
-        <TableCell className="font-medium" style={{ paddingLeft: `${level * 1.5}rem` }}>
+        <TableCell
+          className="font-medium"
+          style={{ paddingLeft: `${level * 1.5}rem` }}
+        >
           {prop.name}
         </TableCell>
         <TableCell>{prop.type}</TableCell>
+        <TableCell>{prop.required.toString()}</TableCell>
       </TableRow>
       {prop.type === "object" &&
         prop.properties &&
-        prop.properties.map((nestedProp) => renderPropertyRow(nestedProp, level + 1))}
+        prop.properties.map((nestedProp) =>
+          renderPropertyRow(nestedProp, level + 1)
+        )}
     </>
-  )
+  );
 
   return (
     <div className="space-y-6">
@@ -32,7 +38,11 @@ export default function SchemaList({ schemas, onDelete }: SchemaListProps) {
         <div key={schema.id} className="border rounded-md">
           <div className="flex items-center justify-between p-4 bg-muted">
             <h3 className="text-lg font-semibold">{schema.name}</h3>
-            <Button variant="contained" size="small" onClick={() => onDelete(schema.id)}>
+            <Button
+              variant="contained"
+              size="small"
+              onClick={() => onDelete(schema.id)}
+            >
               Delete
             </Button>
           </div>
@@ -44,9 +54,12 @@ export default function SchemaList({ schemas, onDelete }: SchemaListProps) {
                   <TableRow>
                     <TableHead>Property</TableHead>
                     <TableHead>Type</TableHead>
+                    <TableHead>Required</TableHead>
                   </TableRow>
                 </TableHead>
-                <TableBody>{schema.properties.map((prop) => renderPropertyRow(prop))}</TableBody>
+                <TableBody>
+                  {schema.properties.map((prop) => renderPropertyRow(prop))}
+                </TableBody>
               </Table>
             </div>
             <div>
@@ -59,28 +72,31 @@ export default function SchemaList({ schemas, onDelete }: SchemaListProps) {
         </div>
       ))}
     </div>
-  )
+  );
 }
 
 function schemaToObject(schema: Omit<Schema, 'version'>): Record<string, any> {
   const obj: Record<string, any> = {}
   schema.properties.forEach((prop) => {
     if (prop.type === "object" && prop.properties) {
-      obj[prop.name] = prop.properties.reduce(
-        (nestedObj, nestedProp) => {
-          if (nestedProp.type === "object" && nestedProp.properties) {
-            nestedObj[nestedProp.name] = schemaToObject({ id: "", name: "", properties: nestedProp.properties })
-          } else {
-            nestedObj[nestedProp.name] = nestedProp.type
-          }
-          return nestedObj
-        },
-        {} as Record<string, any>,
-      )
+      obj[prop.name] = prop.properties.reduce((nestedObj, nestedProp) => {
+        nestedObj[nestedProp.name] = {
+          type: nestedProp.type,
+          required: nestedProp.required
+        };
+        return nestedObj;
+      }, {} as Record<string, any>);
     } else {
-      obj[prop.name] = prop.type
+      obj[prop.name] = {
+        type: prop.type,
+        required: prop.required
+      };
     }
-  })
-  return schema.name ? { [schema.name]: obj } : obj
+  });
+
+  const result = schema.name ? { [schema.name]: obj } : obj;
+  result.required = schema.required;
+
+  return result;
 }
 

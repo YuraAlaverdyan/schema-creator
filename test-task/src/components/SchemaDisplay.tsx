@@ -4,7 +4,7 @@ import { Table, TableBody, TableCell, TableHead, TableRow } from "@mui/material"
 type SchemaDisplayProps = {
   schema: {
     name: string
-    properties: Array<{ name: string; type: string }>
+    properties: Array<{ name: string; type: string, required: boolean }>
   }
 }
 
@@ -20,6 +20,7 @@ export default function SchemaDisplay({ schema }: SchemaDisplayProps) {
             <TableRow>
               <TableHead>Property</TableHead>
               <TableHead>Type</TableHead>
+              <TableHead>Required</TableHead>
             </TableRow>
           </TableHead>
           <TableBody>
@@ -27,6 +28,7 @@ export default function SchemaDisplay({ schema }: SchemaDisplayProps) {
               <TableRow key={index}>
                 <TableCell>{prop.name}</TableCell>
                 <TableCell>{prop.type}</TableCell>
+                <TableCell>{prop.required.toString()}</TableCell>
               </TableRow>
             ))}
           </TableBody>
