@@ -11,6 +11,7 @@ import {
   IconButton,
   Button,
   Typography,
+  Tooltip,
 } from "@mui/material";
 import {
   IconCode,
@@ -18,19 +19,25 @@ import {
   IconEdit,
   IconGrid3x3,
   IconPlus,
-  IconRowRemove,
+  IconTrash,
 } from "@tabler/icons-react";
 import { SchemaProperty } from "../../app/types";
 import AttributeRow from "./AttributeRow";
 
 export default function AttributeTable({
   attributes,
+  selectedIds,
+  toggleSelection,
   addAttribute,
-  handleClearAllAttribnutes
+  handleClearAllAttribnutes,
+  handleRemoveSelected
 }: {
   attributes: SchemaProperty[];
+  selectedIds: string[];
+  toggleSelection: (id: string) => void;
   addAttribute: () => void;
   handleClearAllAttribnutes: () => void;
+  handleRemoveSelected: () => void;
 }) {
   const [expandedRows, setExpandedRows] = useState<{ [key: string]: boolean }>(
     {}
@@ -72,9 +79,11 @@ export default function AttributeTable({
         <Box
           sx={{ borderLeft: 1, borderColor: "divider", height: 24, mx: 2 }}
         />
-        <IconButton>
-          <IconRowRemove />
-        </IconButton>
+        <Tooltip title="Remove selected properties">
+          <IconButton onClick={handleRemoveSelected}>
+            <IconTrash color="red" />
+          </IconButton>
+        </Tooltip>
         <IconButton>
           <IconEdit />
         </IconButton>
@@ -97,7 +106,7 @@ export default function AttributeTable({
           CLEAR ALL
         </Button>
       </Box>
-  
+
       {/* Table */}
       <TableContainer component={Paper}>
         <Table>
@@ -117,6 +126,8 @@ export default function AttributeTable({
                 row={row}
                 expandedRows={expandedRows}
                 onExpandClick={handleExpandClick}
+                toggleSelection={toggleSelection}
+                selectedIds={selectedIds}
               />
             ))}
           </TableBody>

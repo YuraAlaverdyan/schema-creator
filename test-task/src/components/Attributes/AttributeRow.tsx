@@ -12,12 +12,16 @@ import { IconArrowDown, IconArrowUp } from "@tabler/icons-react";
 export default function AttributeRow({
   row,
   expandedRows,
+  selectedIds,
   onExpandClick,
+  toggleSelection,
   level = 0,
 }: {
   row: SchemaProperty;
   expandedRows: { [key: string]: boolean };
+  selectedIds: string[];
   onExpandClick: (id: string) => void;
+  toggleSelection: (id: string) => void;
   level?: number;
 }) {
   return (
@@ -30,7 +34,7 @@ export default function AttributeRow({
         <TableCell padding="checkbox">
           <Box sx={{ display: "flex", alignItems: "center" }}>
             <Box sx={{ ml: level * 2 }}>
-              <Checkbox size="small" />
+              <Checkbox size="small" onChange={() => toggleSelection(row.id)} checked={selectedIds.includes(row.id)} />
             </Box>
             {row.properties && (
               <IconButton size="small" onClick={() => onExpandClick(row.id)}>
@@ -58,6 +62,8 @@ export default function AttributeRow({
                     expandedRows={expandedRows}
                     onExpandClick={onExpandClick}
                     level={level + 1}
+                    toggleSelection={toggleSelection}
+                    selectedIds={selectedIds}
                   />
                 ))}
               </Box>

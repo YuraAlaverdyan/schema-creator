@@ -1,11 +1,5 @@
 import { useState } from "react";
-import {
-  Box,
-  Button,
-  FormLabel,
-  TextField,
-  Typography,
-} from "@mui/material";
+import { Box, Button, FormLabel, TextField, Typography } from "@mui/material";
 import { Schema, SchemaProperty } from "../app/types";
 import AttributeTable from "./Attributes/AttributeEditor";
 import PropertyInput from "./PropertyInput";
@@ -23,6 +17,7 @@ export default function SchemaForm({
 }: SchemaFormProps) {
   const [schema, setSchema] = useState<Schema>(initialSchema);
   const [isOpenModal, setIsOpenModal] = useState<boolean>(false);
+  const [selectedIds, setSelectedIds] = useState<string[]>([]);
 
   const handleSchemaNameChange = (key: string, value: string) => {
     setSchema((prev) => ({ ...prev, [key]: value }));
@@ -46,6 +41,31 @@ export default function SchemaForm({
 
   const handleClearAllAttribnutes = () => {
     setSchema((prev) => ({ ...prev, properties: [] }));
+  };
+
+  const removeSelectedProperties = (properties: SchemaProperty[]): SchemaProperty[] => {
+    return properties
+      .filter((property) => !selectedIds.includes(property.id))
+      .map((property) => ({
+        ...property,
+        properties: property.properties ? removeSelectedProperties(property.properties) : [],
+      }));
+  };
+
+  const handleRemoveSelected = () => {
+    const updatedProperties = removeSelectedProperties(schema.properties);
+    setSchema((prev) => ({ ...prev, properties: updatedProperties }));
+    setSelectedIds([]);
+  };
+
+  const toggleSelection = (id: string) => {
+    setSelectedIds((prev) => {
+      if (prev.includes(id)) {
+        return prev.filter((selectedId) => selectedId !== id);
+      } else {
+        return [...prev, id];
+      }
+    });
   };
 
   const renderProperty = (prop: SchemaProperty, level = 0) => (
@@ -121,15 +141,16 @@ export default function SchemaForm({
         attributes={schema.properties}
         addAttribute={() => setIsOpenModal(true)}
         handleClearAllAttribnutes={handleClearAllAttribnutes}
+        selectedIds={selectedIds}
+        toggleSelection={toggleSelection}
+        handleRemoveSelected={handleRemoveSelected}
       />
       <Modal
         open={isOpenModal}
         onClose={() => setIsOpenModal(false)}
         children={
           <>
-            <PropertyInput
-              onPropertiesChange={handlePropertiesChange}
-            />
+            <PropertyInput onPropertiesChange={handlePropertiesChange} />
             <div className="flex justify-end space-x-2">
               <Button variant="outlined" onClick={() => setIsOpenModal(false)}>
                 Close
