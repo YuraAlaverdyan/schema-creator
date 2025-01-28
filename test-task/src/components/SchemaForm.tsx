@@ -3,7 +3,7 @@ import { Box, Button, FormLabel, TextField, Typography } from "@mui/material";
 import { Schema, SchemaProperty } from "../app/types";
 import AttributeTable from "./Attributes/AttributeEditor";
 import PropertyInput from "./PropertyInput";
-import { Modal } from "./Modal";
+import { Modal } from "./modal";
 
 type SchemaFormProps = {
   initialSchema: Schema;
@@ -18,6 +18,7 @@ export default function SchemaForm({
   const [schema, setSchema] = useState<Schema>(initialSchema);
   const [isOpenModal, setIsOpenModal] = useState<boolean>(false);
   const [selectedIds, setSelectedIds] = useState<string[]>([]);
+  const [selectedRawId,setSelectedRawId] = useState<string>('')
 
   const handleSchemaNameChange = (key: string, value: string) => {
     setSchema((prev) => ({ ...prev, [key]: value }));
@@ -31,7 +32,8 @@ export default function SchemaForm({
       return prev;
     });
   };
-
+  console.log(schema,'schemaschemaschema');
+  
   const handleSubmit = () => {
     onSubmit({
       ...schema,
@@ -138,12 +140,13 @@ export default function SchemaForm({
         </div>
       )}
       <AttributeTable
-        attributes={schema.properties}
+        attributes={selectedRawId && isOpenModal ? [] :schema.properties}
         addAttribute={() => setIsOpenModal(true)}
         handleClearAllAttribnutes={handleClearAllAttribnutes}
         selectedIds={selectedIds}
         toggleSelection={toggleSelection}
         handleRemoveSelected={handleRemoveSelected}
+        setSelectedRawId={setSelectedRawId}
       />
       <Modal
         open={isOpenModal}

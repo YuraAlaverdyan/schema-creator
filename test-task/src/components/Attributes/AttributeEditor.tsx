@@ -29,13 +29,15 @@ export default function AttributeTable({
   selectedIds,
   toggleSelection,
   addAttribute,
-  handleClearAllAttribnutes,
-  handleRemoveSelected
+  handleRemoveSelected,
+  setSelectedRawId,
+  handleClearAllAttribnutes
 }: {
   attributes: SchemaProperty[];
   selectedIds: string[];
   toggleSelection: (id: string) => void;
   addAttribute: () => void;
+  setSelectedRawId: React.Dispatch<React.SetStateAction<string>>;
   handleClearAllAttribnutes: () => void;
   handleRemoveSelected: () => void;
 }) {
@@ -85,7 +87,7 @@ export default function AttributeTable({
           </IconButton>
         </Tooltip>
         <IconButton>
-          <IconEdit />
+          <IconEdit onClick={addAttribute}/>
         </IconButton>
         <Box
           sx={{ borderLeft: 1, borderColor: "divider", height: 24, mx: 2 }}
@@ -128,6 +130,7 @@ export default function AttributeTable({
                 onExpandClick={handleExpandClick}
                 toggleSelection={toggleSelection}
                 selectedIds={selectedIds}
+                setSelectedRawId={setSelectedRawId}
               />
             ))}
           </TableBody>
