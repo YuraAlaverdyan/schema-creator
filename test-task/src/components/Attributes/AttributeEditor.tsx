@@ -31,13 +31,16 @@ import { SchemaProperty } from "../../app/types";
 import AttributeRow from "./AttributeRow";
 import { useAppDispatch } from "../../app/store";
 import { resetAllAtributesFromSchema } from "../../app/features/scheme";
+import PropertyInput from "../PropertyInput";
 
 export default function AttributeTable({
   attributes,
-  schemaId
+  schemaId,
+  addAttribute
 }: {
   attributes: SchemaProperty[];
   schemaId: string;
+  addAttribute: () => void;
 }) {
   const dispatch = useAppDispatch()
   const [expandedRows, setExpandedRows] = useState<{ [key: string]: boolean }>(
@@ -97,6 +100,7 @@ export default function AttributeTable({
           startIcon={<IconPlus />}
           variant="contained"
           sx={{ bgcolor: "#00b0ff", "&:hover": { bgcolor: "#0081cb" } }}
+          onClick={addAttribute}
         >
           ADD ATTRIBUTE
         </Button>
@@ -108,7 +112,7 @@ export default function AttributeTable({
           CLEAR ALL
         </Button>
       </Box>
-
+  
       {/* Table */}
       <TableContainer component={Paper}>
         <Table>

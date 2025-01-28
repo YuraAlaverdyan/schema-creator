@@ -9,6 +9,8 @@ import {
 } from "@mui/material";
 import { Schema, SchemaProperty } from "../app/types";
 import AttributeTable from "./Attributes/AttributeEditor";
+import PropertyInput from "./PropertyInput";
+import { Modal } from "./modal";
 
 type SchemaFormProps = {
   initialSchema: Schema;
@@ -22,6 +24,7 @@ export default function SchemaForm({
   onCancel,
 }: SchemaFormProps) {
   const [schema, setSchema] = useState<Schema>(initialSchema);
+  const [isOpenModal, setIsOpenModal] = useState<boolean>(false)
 
   const handleSchemaNameChange = (key: string, value: string) => {
     setSchema((prev) => ({ ...prev, [key]: value }));
@@ -90,7 +93,13 @@ export default function SchemaForm({
           placeholder="Enter a Version"
         />
       </Box>
-      {/* <PropertyInput onPropertiesChange={handlePropertiesChange} /> */}
+      {/* {schema.properties.length > 0 && (
+        <div className="space-y-2">
+          <FormLabel>Properties</FormLabel>
+          {schema.properties.map((prop) => renderProperty(prop))}
+        </div>
+      )} */}
+      
       <Box sx={{ mb: 3 }}>
         <Typography variant="subtitle1" gutterBottom>
           ATTRIBUTES
@@ -100,19 +109,22 @@ export default function SchemaForm({
           credential claims reflected by this schema
         </Typography>
       </Box>
-      {/* {schema.properties.length > 0 && (
+      {schema.properties.length > 0 && (
         <div className="space-y-2">
           <FormLabel>Properties</FormLabel>
           {schema.properties.map((prop) => renderProperty(prop))}
         </div>
-      )} */}
-      <AttributeTable attributes={schema.properties} schemaId={schema.id} />
-      <div className="flex justify-end space-x-2">
+      )}
+      <AttributeTable attributes={schema.properties} schemaId={schema.id} addAttribute={() => setIsOpenModal(true)}/>
+      <Modal open={isOpenModal} onClose={() => setIsOpenModal(false)} children={<>
+        <PropertyInput onPropertiesChange={handlePropertiesChange}/>
+        <div className="flex justify-end space-x-2">
         <Button variant="outlined" onClick={onCancel}>
           Cancel
         </Button>
         <Button onClick={handleSubmit}>Save Schema</Button>
       </div>
+      </>}/>
     </Box>
   );
 }

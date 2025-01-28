@@ -4,13 +4,13 @@ import { IconPlus, IconX } from "@tabler/icons-react";
 import { SchemaProperty } from "../app/types";
 
 type PropertyInputProps = {
-  onPropertiesChange: (properties: SchemaProperty[]) => void;
   level?: number;
+  onPropertiesChange: (properties: SchemaProperty[]) => void;
 };
 
 export default function PropertyInput({
-  onPropertiesChange,
   level = 0,
+  onPropertiesChange,
 }: PropertyInputProps) {
   const [properties, setProperties] = useState<SchemaProperty[]>([
     { name: "", type: "", required: false, id: Math.random().toString(), description: "" },
