@@ -24,7 +24,7 @@ export default function SchemaForm({
   onCancel,
 }: SchemaFormProps) {
   const [schema, setSchema] = useState<Schema>(initialSchema);
-  const [isOpenModal, setIsOpenModal] = useState<boolean>(false)
+  const [isOpenModal, setIsOpenModal] = useState<boolean>(false);
 
   const handleSchemaNameChange = (key: string, value: string) => {
     setSchema((prev) => ({ ...prev, [key]: value }));
@@ -99,7 +99,7 @@ export default function SchemaForm({
           {schema.properties.map((prop) => renderProperty(prop))}
         </div>
       )} */}
-      
+
       <Box sx={{ mb: 3 }}>
         <Typography variant="subtitle1" gutterBottom>
           ATTRIBUTES
@@ -115,16 +115,26 @@ export default function SchemaForm({
           {schema.properties.map((prop) => renderProperty(prop))}
         </div>
       )}
-      <AttributeTable attributes={schema.properties} schemaId={schema.id} addAttribute={() => setIsOpenModal(true)}/>
-      <Modal open={isOpenModal} onClose={() => setIsOpenModal(false)} children={<>
-        <PropertyInput onPropertiesChange={handlePropertiesChange}/>
-        <div className="flex justify-end space-x-2">
-        <Button variant="outlined" onClick={onCancel}>
-          Cancel
-        </Button>
-        <Button onClick={handleSubmit}>Save Schema</Button>
-      </div>
-      </>}/>
+      <AttributeTable
+        attributes={schema.properties}
+        schemaId={schema.id}
+        addAttribute={() => setIsOpenModal(true)}
+      />
+      <Modal
+        open={isOpenModal}
+        onClose={() => setIsOpenModal(false)}
+        children={
+          <>
+            <PropertyInput onPropertiesChange={handlePropertiesChange} />
+            <div className="flex justify-end space-x-2">
+              <Button variant="outlined" onClick={onCancel}>
+                Cancel
+              </Button>
+              <Button onClick={handleSubmit}>Save Schema</Button>
+            </div>
+          </>
+        }
+      />
     </Box>
   );
 }

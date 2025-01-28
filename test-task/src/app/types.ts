@@ -12,6 +12,5 @@ export type Schema = {
   id: string;
   name: string;
   version: string;
-  required: boolean;
   properties: SchemaProperty[];
 };

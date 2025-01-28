@@ -1,5 +1,12 @@
 import { useState, useEffect, useRef } from "react";
-import { Button, Checkbox, Input, MenuItem, Select } from "@mui/material";
+import {
+  Button,
+  Checkbox,
+  Input,
+  MenuItem,
+  Select,
+  TextareaAutosize,
+} from "@mui/material";
 import { IconPlus, IconX } from "@tabler/icons-react";
 import { SchemaProperty } from "../app/types";
 
@@ -13,7 +20,13 @@ export default function PropertyInput({
   onPropertiesChange,
 }: PropertyInputProps) {
   const [properties, setProperties] = useState<SchemaProperty[]>([
-    { name: "", type: "", required: false, id: Math.random().toString(), description: "" },
+    {
+      name: "",
+      type: "",
+      required: false,
+      id: Math.random().toString(),
+      description: "",
+    },
   ]);
   const lastValidProperties = useRef<SchemaProperty[]>([]);
 
@@ -28,9 +41,17 @@ export default function PropertyInput({
     }
   }, [properties, onPropertiesChange]);
 
-  const handleNameChange = (index: number, name: string) => {
+  const handleFieldChange = ({
+    index,
+    field,
+    value,
+  }: {
+    index: number;
+    field: "name" | "description";
+    value: string;
+  }) => {
     const newProperties = [...properties];
-    newProperties[index].name = name;
+    newProperties[index][field] = value;
     setProperties(newProperties);
   };
 
@@ -84,7 +105,13 @@ export default function PropertyInput({
           <div className="flex space-x-2">
             <Input
               value={property.name}
-              onChange={(e) => handleNameChange(index, e.target.value)}
+              onChange={(e) =>
+                handleFieldChange({
+                  index,
+                  field: "name",
+                  value: e.target.value,
+                })
+              }
               placeholder="Property name"
               className="flex-grow"
             />
@@ -107,6 +134,18 @@ export default function PropertyInput({
               <MenuItem value="boolean">Boolean</MenuItem>
               <MenuItem value="object">Object</MenuItem>
             </Select>
+            <TextareaAutosize
+              value={property.description}
+              onChange={(e) =>
+                handleFieldChange({
+                  index,
+                  field: "description",
+                  value: e.target.value,
+                })
+              }
+              placeholder="Property description"
+              className="flex-grow"
+            />
             <Button variant="outlined" onClick={() => handleRemoveField(index)}>
               <IconX className="h-4 w-4" />
             </Button>

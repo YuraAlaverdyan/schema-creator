@@ -49,7 +49,6 @@ export default function SchemaEditor() {
               name: "",
               version: "",
               properties: [],
-              required: false,
             }}
             onSubmit={addSchema}
             onCancel={() => setIsCreating(false)}

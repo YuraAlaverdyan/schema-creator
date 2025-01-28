@@ -76,26 +76,35 @@ export default function SchemaList({ schemas, onDelete }: SchemaListProps) {
 }
 
 function schemaToObject(schema: Omit<Schema, 'version'>): Record<string, any> {
-  const obj: Record<string, any> = {}
+  const obj: Record<string, any> = {};
+
   schema.properties.forEach((prop) => {
     if (prop.type === "object" && prop.properties) {
-      obj[prop.name] = prop.properties.reduce((nestedObj, nestedProp) => {
+      const nestedObj = prop.properties.reduce((nestedObj, nestedProp) => {
         nestedObj[nestedProp.name] = {
           type: nestedProp.type,
-          required: nestedProp.required
+          required: nestedProp.required,
+          description: nestedProp.description
         };
         return nestedObj;
       }, {} as Record<string, any>);
+
+      obj[prop.name] = {
+        type: prop.type,
+        required: prop.required,
+        description: prop.description,
+        ...nestedObj 
+      };
     } else {
       obj[prop.name] = {
         type: prop.type,
-        required: prop.required
+        required: prop.required,
+        description: prop.description
       };
     }
   });
 
   const result = schema.name ? { [schema.name]: obj } : obj;
-  result.required = schema.required;
 
   return result;
 }
