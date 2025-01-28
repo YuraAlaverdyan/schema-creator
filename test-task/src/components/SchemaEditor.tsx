@@ -1,50 +1,52 @@
-"use client"
-
-import { useState } from "react"
-import SchemaForm from "./SchemaForm"
-import SchemaList from "./SchemaList"
-import { Button, Card, CardContent, CardHeader } from "@mui/material"
-
-export type SchemaProperty = {
-  name: string
-  type: string
-  properties?: SchemaProperty[]
-}
-
-export type Schema = {
-  id: string
-  name: string
-  properties: SchemaProperty[]
-}
+import { useState } from "react";
+import SchemaForm from "./SchemaForm";
+import SchemaList from "./SchemaList";
+import { Box, Button, CardContent, Typography } from "@mui/material";
+import { Schema } from "../app/types";
+import { useAppDispatch, useAppSelector } from "../app/store";
+import { addSchemaToList, deleteSchemaFromList } from "../app/features/scheme";
 
 export default function SchemaEditor() {
-  const [schemas, setSchemas] = useState<Schema[]>([])
-  const [isCreating, setIsCreating] = useState(false)
+  const { schemas } = useAppSelector((state) => state.scheme);
+  const dispatch = useAppDispatch();
+  const [isCreating, setIsCreating] = useState(false);
 
   const addNewSchema = () => {
-    setIsCreating(true)
-  }
+    setIsCreating(true);
+  };
 
   const addSchema = (newSchema: Schema) => {
-    setSchemas((prev) => [...prev, newSchema])
-    setIsCreating(false)
-  }
+    dispatch(addSchemaToList(newSchema));
+    setIsCreating(false);
+  };
 
   const deleteSchema = (id: string) => {
-    setSchemas((prev) => prev.filter((schema) => schema.id !== id))
-  }
+    dispatch(deleteSchemaFromList(id));
+  };
 
   return (
-    <Card className="w-full max-w-4xl mx-auto">
-      <CardHeader>
-        <p>Schema Editor</p>
-      </CardHeader>
+    <Box
+      sx={{
+        width: '100%',
+        mx: "auto",
+        p: 3,
+        textAlign: 'start',
+      }}
+    >
+      <Typography variant="h4" component="h1" gutterBottom sx={{ mb: 4 }}>
+        Create new Schema
+      </Typography>
       <CardContent className="space-y-6">
         {!isCreating && <Button onClick={addNewSchema}>Add New Schema</Button>}
 
         {isCreating && (
           <SchemaForm
-            initialSchema={{ id: `new-${Date.now()}`, name: "", properties: [] }}
+            initialSchema={{
+              id: `new-${Date.now()}`,
+              name: "",
+              version: "",
+              properties: [],
+            }}
             onSubmit={addSchema}
             onCancel={() => setIsCreating(false)}
           />
@@ -52,7 +54,6 @@ export default function SchemaEditor() {
 
         <SchemaList schemas={schemas} onDelete={deleteSchema} />
       </CardContent>
-    </Card>
-  )
+    </Box>
+  );
 }
-

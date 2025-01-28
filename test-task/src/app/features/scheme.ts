@@ -1,31 +1,28 @@
-import { createSlice } from '@reduxjs/toolkit'
-import type { PayloadAction } from '@reduxjs/toolkit'
+import { createSlice } from "@reduxjs/toolkit";
+import type { PayloadAction } from "@reduxjs/toolkit";
+import { Schema } from "../types";
 
 export interface CounterState {
-  value: number
+  schemas: Schema[];
 }
 
 const initialState: CounterState = {
-  value: 0,
-}
+  schemas: [],
+};
 
-export const counterSlice = createSlice({
-  name: 'counter',
+export const schemeSlice = createSlice({
+  name: "scheme",
   initialState,
   reducers: {
-    increment: (state) => {
-      state.value += 1
+    addSchemaToList: (state, action: PayloadAction<Schema>) => {
+      state.schemas = [...state.schemas, action.payload];
     },
-    decrement: (state) => {
-      state.value -= 1
-    },
-    incrementByAmount: (state, action: PayloadAction<number>) => {
-      state.value += action.payload
+    deleteSchemaFromList: (state, action: PayloadAction<string>) => {
+      state.schemas = state.schemas.filter((s) => s.id !== action.payload);
     },
   },
-})
+});
 
-// Action creators are generated for each case reducer function
-export const { increment, decrement, incrementByAmount } = counterSlice.actions
+export const { addSchemaToList, deleteSchemaFromList } = schemeSlice.actions;
 
-export default counterSlice.reducer
+export default schemeSlice.reducer;

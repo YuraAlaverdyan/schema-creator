@@ -1,6 +1,6 @@
 import { Button, Table, TableBody, TableCell, TableHead, TableRow } from "@mui/material"
-import type { Schema, SchemaProperty } from "./SchemaEditor"
 import { ReactNode } from "react"
+import { Schema, SchemaProperty } from "../app/types"
 
 type SchemaListProps = {
   schemas: Schema[]
@@ -62,7 +62,7 @@ export default function SchemaList({ schemas, onDelete }: SchemaListProps) {
   )
 }
 
-function schemaToObject(schema: Schema): Record<string, any> {
+function schemaToObject(schema: Omit<Schema, 'version'>): Record<string, any> {
   const obj: Record<string, any> = {}
   schema.properties.forEach((prop) => {
     if (prop.type === "object" && prop.properties) {

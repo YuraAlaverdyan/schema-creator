@@ -1,7 +1,7 @@
 import { useState, useEffect, useRef } from "react";
-import type { SchemaProperty } from "./SchemaEditor";
 import { Button, Input, MenuItem, Select } from "@mui/material";
 import { IconPlus, IconX } from "@tabler/icons-react";
+import { SchemaProperty } from "../app/types";
 
 type PropertyInputProps = {
   onPropertiesChange: (properties: SchemaProperty[]) => void;
