@@ -14,9 +14,6 @@ export const schemeSlice = createSlice({
   name: "scheme",
   initialState,
   reducers: {
-    addSchemaToList: (state, action: PayloadAction<Schema>) => {
-      state.schemas = [action.payload];
-    },
     addSchemaToSchemaList: (state, action: PayloadAction<Schema>) => {
       state.schemas = [...state.schemas, action.payload];
     },
@@ -37,7 +34,6 @@ export const schemeSlice = createSlice({
 });
 
 export const {
-  addSchemaToList,
   deleteSchemaFromList,
   addSchemaToSchemaList,
   resetAllAtributesFromSchema,

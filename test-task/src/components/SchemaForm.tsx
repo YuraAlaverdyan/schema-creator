@@ -1,11 +1,11 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { Box, Button, Paper, TextField, Typography } from "@mui/material";
 import { Schema, SchemaProperty } from "../app/types";
 import AttributeTable from "./Attributes/AttributeEditor";
 import PropertyInput from "./PropertyInput";
 import { Modal } from "./Modal";
-import { addSchemaToList } from "../app/features/scheme";
 import { useAppDispatch } from "../app/store";
+import SchemaList from "./SchemaList";
 
 type SchemaFormProps = {
   initialSchema: Schema;
@@ -16,7 +16,9 @@ export default function SchemaForm({
   initialSchema,
   onSubmit,
 }: SchemaFormProps) {
-  const [schema, setSchema] = useState<Schema>(JSON.parse(JSON.stringify(initialSchema)));
+  const [schema, setSchema] = useState<Schema>(
+    JSON.parse(JSON.stringify(initialSchema))
+  );
   const [isOpenModal, setIsOpenModal] = useState<boolean>(false);
   const [isEditing, setIsEditing] = useState<boolean>(false);
   const [selectedIds, setSelectedIds] = useState<string[]>([]);
@@ -114,10 +116,6 @@ export default function SchemaForm({
     </div>
   );
 
-  useEffect(() => {
-    dispatch(addSchemaToList(schema));
-  }, [schema]);
-
   return (
     <Box
       sx={{
@@ -180,9 +178,8 @@ export default function SchemaForm({
             elevation={1}
             sx={{
               p: 3,
-              maxWidth: 700,
               bgcolor: "#ffffff",
-              maxHeight: "400px",
+              maxHeight: "80vh",
               overflowY: "scroll",
               display: "flex",
               flexDirection: "column",
@@ -219,13 +216,16 @@ export default function SchemaForm({
           </Paper>
         }
       />
-      <Box sx={{
-        display: 'flex',
-        width: '100%',
-        justifyContent: 'flex-end',
-      }}>
+      <Box
+        sx={{
+          display: "flex",
+          width: "100%",
+          justifyContent: "flex-end",
+        }}
+      >
         <Button onClick={() => onSubmit(schema)}>Save schema</Button>
       </Box>
+      <SchemaList schemas={[schema]} title="Schema preview" />
     </Box>
   );
 }

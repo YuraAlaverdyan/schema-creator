@@ -1,13 +1,14 @@
 import { ReactNode } from "react";
 
-import { Box, TableCell, TableRow } from "@mui/material";
+import { Box, TableCell, TableRow, Typography } from "@mui/material";
 import { Schema, SchemaProperty } from "../app/types";
 
 type SchemaListProps = {
   schemas: Schema[];
+  title: string;
 };
 
-export default function SchemaList({ schemas }: SchemaListProps) {
+export default function SchemaList({ schemas, title }: SchemaListProps) {
   if (!schemas.length) {
     return <p>No schemas created yet.</p>;
   }
@@ -38,8 +39,10 @@ export default function SchemaList({ schemas }: SchemaListProps) {
         display: "flex",
         flexDirection: "column",
         gap: "20px",
+        textAlign: "start",
       }}
     >
+      <Typography variant="h4">{title}</Typography>
       {schemas.map((schema) => (
         <Box
           key={schema.id}
