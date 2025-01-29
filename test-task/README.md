@@ -1,50 +1,62 @@
-# React + TypeScript + Vite
+# Schema Creator Web App
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Schema Creator is a powerful web application that allows users to create, manage, and export custom schemas. With an intuitive interface, you can easily define complex data structures, add and remove attributes, and generate JSON output that conforms to your schema definitions.
 
-Currently, two official plugins are available:
+## Features
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+- Create and manage multiple schemas
+- Add, edit, and remove schema properties
+- Support for nested properties
+- Real-time JSON preview
+- Export schemas to JSON format
+- Version control for schemas
 
-## Expanding the ESLint configuration
+## Usage
 
-If you are developing a production application, we recommend updating the configuration to enable type aware lint rules:
+1. **Creating a New Schema**
+   - Click on the "Add new schema" button
+   - Enter a name and version for your schema
 
-- Configure the top-level `parserOptions` property like this:
+2. **Adding Properties**
+   - In the schema editor, click "Add Property"
+   - Fill in the property details (name, type, description, etc.)
+   - Set the "required" flag if the property is mandatory
+   - For nested properties, you can add sub-properties by clicking "Add field"
 
-```js
-export default tseslint.config({
-  languageOptions: {
-    // other options...
-    parserOptions: {
-      project: ['./tsconfig.node.json', './tsconfig.app.json'],
-      tsconfigRootDir: import.meta.dirname,
-    },
-  },
-})
+3. **Removing Properties**
+   - Select attributes from the table and click the "Remove" button in the toolbar to delete them.
+
+4. **Editing Properties**
+   - Select an attribute from the table, then click the edit icon in the toolbar to open its edit form. ( You can select only one property to edit )
+   - Modify the property details as needed
+   - Click "Save" to apply the changes
+
+5. **Generating JSON**
+   - As you build your schema, the JSON preview will update in real-time
+   - You can copy the JSON output or export it to a file
+
+## Schema Structure
+
+The Schema Creator uses the following TypeScript types to define the structure of schemas and their properties:
+
+```typescript
+export type SchemaProperty = {
+  id: string;
+  name: string;
+  type: string;
+  required: boolean;
+  properties?: SchemaProperty[];
+  description: string;
+};
+
+export type Schema = {
+  id: string;
+  name: string;
+  version: string;
+  properties: SchemaProperty[];
+};
 ```
 
-- Replace `tseslint.configs.recommended` to `tseslint.configs.recommendedTypeChecked` or `tseslint.configs.strictTypeChecked`
-- Optionally add `...tseslint.configs.stylisticTypeChecked`
-- Install [eslint-plugin-react](https://github.com/jsx-eslint/eslint-plugin-react) and update the config:
-
-```js
-// eslint.config.js
-import react from 'eslint-plugin-react'
-
-export default tseslint.config({
-  // Set the react version
-  settings: { react: { version: '18.3' } },
-  plugins: {
-    // Add the react plugin
-    react,
-  },
-  rules: {
-    // other rules...
-    // Enable its recommended rules
-    ...react.configs.recommended.rules,
-    ...react.configs['jsx-runtime'].rules,
-  },
-})
-```
+- Each schema has a unique `id`, `name`, `version`, and an array of `properties`.
+- Properties have an `id`, `name`, `type`, `required` flag, optional nested `properties`, and a `description`.
+- Nested properties allow for creating complex, hierarchical schemas.
