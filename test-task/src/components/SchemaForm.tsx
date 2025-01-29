@@ -6,6 +6,9 @@ import PropertyInput from "./PropertyInput";
 import { Modal } from "./Modal";
 import { useAppDispatch } from "../app/store";
 import SchemaList from "./SchemaList";
+import { JsonEditor } from "./JSONEditor";
+import { objectToSchema } from "../utils/schema/schemaGenerators";
+import { IJSON } from "../utils/types/schemaType";
 
 type SchemaFormProps = {
   initialSchema: Schema;
@@ -25,6 +28,7 @@ export default function SchemaForm({
   const [schemaAttributes, setSchemaAttributes] = useState<SchemaProperty[]>(
     []
   );
+  const [isOpenJsonEditor, setIsOpenJsonEditor] = useState<boolean>(false);
 
   const dispatch = useAppDispatch();
 
@@ -89,6 +93,12 @@ export default function SchemaForm({
         return [...prev, id];
       }
     });
+  };
+
+  const generateTable = (data: IJSON) => {
+    setIsOpenJsonEditor(false);
+    const generatedData = objectToSchema(data);
+    setSchema(generatedData);
   };
 
   const onSave = () => {
@@ -169,6 +179,12 @@ export default function SchemaForm({
         selectedIds={selectedIds}
         toggleSelection={toggleSelection}
         handleRemoveSelected={handleRemoveSelected}
+        setIsOpenJsonEditor={setIsOpenJsonEditor}
+      />
+      <Modal
+        open={isOpenJsonEditor}
+        onClose={() => setIsOpenJsonEditor(false)}
+        children={<JsonEditor generateTable={generateTable} />}
       />
       <Modal
         open={isOpenModal}

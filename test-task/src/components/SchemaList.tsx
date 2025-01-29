@@ -2,6 +2,7 @@ import { ReactNode } from "react";
 
 import { Box, TableCell, TableRow, Typography } from "@mui/material";
 import { Schema, SchemaProperty } from "../app/types";
+import { schemaToObject } from "../utils/schema/schemaGenerators";
 
 type SchemaListProps = {
   schemas: Schema[];
@@ -59,42 +60,4 @@ export default function SchemaList({ schemas, title }: SchemaListProps) {
       ))}
     </Box>
   );
-}
-
-function schemaToObject(schema: Schema): Record<string, any> {
-  const obj: Record<string, any> = {};
-
-  schema.properties.forEach((prop) => {
-    if (prop.type === "object" && prop.properties) {
-      const nestedObj = prop.properties.reduce((nestedObj, nestedProp) => {
-        nestedObj[nestedProp.name] = {
-          type: nestedProp.type,
-          required: nestedProp.required,
-          description: nestedProp.description,
-        };
-        return nestedObj;
-      }, {} as Record<string, any>);
-
-      obj[prop.name] = {
-        type: prop.type,
-        required: prop.required,
-        description: prop.description,
-        ...nestedObj,
-      };
-    } else {
-      obj[prop.name] = {
-        type: prop.type,
-        required: prop.required,
-        description: prop.description,
-      };
-    }
-  });
-
-  const result = {
-    name: schema.name,
-    version: schema.version,
-    attributes: [obj],
-  };
-
-  return result;
 }
