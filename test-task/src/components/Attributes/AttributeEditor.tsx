@@ -11,6 +11,7 @@ export default function AttributeTable({
     toggleSelection,
     handleClearAllAttribnutes,
     handleRemoveSelected,
+    setIsOpenJsonEditor,
 }: {
     attributes: SchemaProperty[];
     selectedIds: string[];
@@ -18,6 +19,7 @@ export default function AttributeTable({
     toggleSelection: (id: string) => void;
     handleRemoveSelected: () => void;
     handleClearAllAttribnutes: () => void;
+    setIsOpenJsonEditor: React.Dispatch<React.SetStateAction<boolean>>
 }) {
     const [expandedRows, setExpandedRows] = useState<{ [key: string]: boolean }>({});
     console.log('++++++++++++++++++')
@@ -46,7 +48,7 @@ export default function AttributeTable({
                 <Typography variant="body2" sx={{ color: "text.secondary", marginRight: 2 }}>
                     VIEW OPTIONS
                 </Typography>
-                <IconButton>
+                <IconButton onClick={() => setIsOpenJsonEditor(true)}>
                     <IconCode />
                 </IconButton>
                 <IconButton>

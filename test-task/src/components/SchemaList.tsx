@@ -2,6 +2,7 @@ import { ReactNode } from "react";
 
 import { Box, TableCell, TableRow } from "@mui/material";
 import { Schema, SchemaProperty } from "../app/types";
+import { schemaToObject } from "../utils/schema/schemaGenerators";
 
 type SchemaListProps = {
   schemas: Schema[];
@@ -33,64 +34,18 @@ export default function SchemaList({ schemas }: SchemaListProps) {
   );
 
   return (
-    <Box
-      sx={{
-        display: "flex",
-        flexDirection: "column",
-        gap: "20px",
-      }}
-    >
+    <div className="space-y-6">
       {schemas.map((schema) => (
-        <Box
-          sx={{
-            p: 3,
-            border: "1px solid black",
-            borderRadius: "16px",
-          }}
-        >
-          <pre className="bg-muted p-2 rounded-md overflow-x-auto">
-            {JSON.stringify(schemaToObject(schema), null, 2)}
-          </pre>
-        </Box>
+        <div key={schema.id} className="border rounded-md">
+          <div className="p-4 space-y-4">
+            <div>
+              <pre className="bg-muted p-2 rounded-md overflow-x-auto">
+                {JSON.stringify(schemaToObject(schema), null, 2)}
+              </pre>
+            </div>
+          </div>
+        </div>
       ))}
-    </Box>
+    </div>
   );
-}
-
-function schemaToObject(schema: Schema): Record<string, any> {
-  const obj: Record<string, any> = {};
-
-  schema.properties.forEach((prop) => {
-    if (prop.type === "object" && prop.properties) {
-      const nestedObj = prop.properties.reduce((nestedObj, nestedProp) => {
-        nestedObj[nestedProp.name] = {
-          type: nestedProp.type,
-          required: nestedProp.required,
-          description: nestedProp.description,
-        };
-        return nestedObj;
-      }, {} as Record<string, any>);
-
-      obj[prop.name] = {
-        type: prop.type,
-        required: prop.required,
-        description: prop.description,
-        ...nestedObj,
-      };
-    } else {
-      obj[prop.name] = {
-        type: prop.type,
-        required: prop.required,
-        description: prop.description,
-      };
-    }
-  });
-
-  const result = {
-    name: schema.name,
-    version: schema.version,
-    attributes: [obj],
-  };
-
-  return result;
 }
