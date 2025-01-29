@@ -1,42 +1,39 @@
 import { useState } from "react";
 import { Box, Button, Paper, TextField, Typography } from "@mui/material";
-import { Schema, SchemaProperty } from "../app/types";
-import AttributeTable from "./Attributes/AttributeEditor";
-import PropertyInput from "./PropertyInput";
-import { Modal } from "./Modal";
-import { useAppDispatch } from "../app/store";
+import { ISchema, ISchemaProperty } from "../../store/types";
+import { Modal } from "../Modal";
+import { JsonEditor } from "../JsonEditor";
+import { objectToSchema } from "../../utils/schema/schemaGenerators";
+import { IJSON } from "../../utils/types/schemaType";
 import SchemaList from "./SchemaList";
-import { JsonEditor } from "./JSONEditor";
-import { objectToSchema } from "../utils/schema/schemaGenerators";
-import { IJSON } from "../utils/types/schemaType";
+import AttributeTable from "../attributes/AttributeEditor";
+import PropertyInput from "../PropertyInput";
 
 type SchemaFormProps = {
-  initialSchema: Schema;
-  onSubmit: (schema: Schema) => void;
+  initialSchema: ISchema;
+  onSubmit: (schema: ISchema) => void;
 };
 
 export default function SchemaForm({
   initialSchema,
   onSubmit,
 }: SchemaFormProps) {
-  const [schema, setSchema] = useState<Schema>(
+  const [schema, setSchema] = useState<ISchema>(
     JSON.parse(JSON.stringify(initialSchema))
   );
   const [isOpenModal, setIsOpenModal] = useState<boolean>(false);
   const [isEditing, setIsEditing] = useState<boolean>(false);
   const [selectedIds, setSelectedIds] = useState<string[]>([]);
-  const [schemaAttributes, setSchemaAttributes] = useState<SchemaProperty[]>(
+  const [schemaAttributes, setSchemaAttributes] = useState<ISchemaProperty[]>(
     []
   );
   const [isOpenJsonEditor, setIsOpenJsonEditor] = useState<boolean>(false);
-
-  const dispatch = useAppDispatch();
 
   const handleSchemaNameChange = (key: string, value: string) => {
     setSchema((prev) => ({ ...prev, [key]: value }));
   };
 
-  const handlePropertiesChange = (properties: SchemaProperty[]) => {
+  const handlePropertiesChange = (properties: ISchemaProperty[]) => {
     setSchemaAttributes((prev) => {
       if (JSON.stringify(prev) !== JSON.stringify(properties)) {
         return [...schema.properties, ...properties];
@@ -51,8 +48,8 @@ export default function SchemaForm({
   };
 
   const removeSelectedProperties = (
-    properties: SchemaProperty[]
-  ): SchemaProperty[] => {
+    properties: ISchemaProperty[]
+  ): ISchemaProperty[] => {
     return properties
       .filter((property) => !selectedIds.includes(property.id))
       .map((property) => ({
@@ -64,9 +61,9 @@ export default function SchemaForm({
   };
 
   const findPropertyById = (
-    properties: SchemaProperty[],
+    properties: ISchemaProperty[],
     id: string
-  ): SchemaProperty | null => {
+  ): ISchemaProperty | null => {
     for (const property of properties) {
       if (property.id === id) {
         return property;
@@ -109,7 +106,7 @@ export default function SchemaForm({
     setIsOpenModal(false);
   };
 
-  const renderProperty = (prop: SchemaProperty, level = 0) => (
+  const renderProperty = (prop: ISchemaProperty, level = 0) => (
     <div key={prop.name} className={`space-y-2 ${level > 0 ? "ml-4" : ""}`}>
       <div className="flex justify-between items-center bg-muted p-2 rounded-md">
         <span>
@@ -208,7 +205,7 @@ export default function SchemaForm({
                 isEditing
                   ? [
                       findPropertyById(schema.properties, selectedIds?.[0]) ||
-                        ({} as SchemaProperty),
+                        ({} as ISchemaProperty),
                     ]
                   : schema.properties
               }

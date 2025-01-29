@@ -1,9 +1,9 @@
 import { createSlice } from "@reduxjs/toolkit";
 import type { PayloadAction } from "@reduxjs/toolkit";
-import { Schema } from "../types";
+import { ISchema } from "../types";
 
 export interface CounterState {
-  schemas: Schema[];
+  schemas: ISchema[];
 }
 
 const initialState: CounterState = {
@@ -14,7 +14,7 @@ export const schemeSlice = createSlice({
   name: "scheme",
   initialState,
   reducers: {
-    addSchemaToSchemaList: (state, action: PayloadAction<Schema>) => {
+    addSchemaToSchemaList: (state, action: PayloadAction<ISchema>) => {
       state.schemas = [...state.schemas, action.payload];
     },
     deleteSchemaFromList: (state, action: PayloadAction<string>) => {

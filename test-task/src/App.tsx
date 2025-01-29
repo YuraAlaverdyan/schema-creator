@@ -1,7 +1,7 @@
-import { Box, CssBaseline, ThemeProvider } from "@mui/material";
-import SchemaEditor from "./components/SchemaEditor";
-import { theme } from "./theme";
-import "./App.css";
+import { CssBaseline, ThemeProvider } from '@mui/material'
+import { theme } from './theme'
+import SchemaEditor from './components/schema/SchemaEditor'
+import './App.css'
 
 function App() {
   return (

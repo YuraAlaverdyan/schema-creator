@@ -1,11 +1,11 @@
-import { Schema } from "../../app/types";
+import { ISchema } from "../../store/types";
 import { IJSON, IProperty, ISubValue } from "../types/schemaType";
 
 const generateId = (): string => {
     return Math.random().toString(36).substring(2, 15);
 }
 
-export const objectToSchema = (data:IJSON):Schema  => {
+export const objectToSchema = (data:IJSON):ISchema  => {
     return {
         id: `new-${Date.now()}`,
         name: data.name,
@@ -39,7 +39,7 @@ export const objectToSchema = (data:IJSON):Schema  => {
     };
 }
 
-export const schemaToObject = (schema: Schema): Record<string, any> => {
+export const schemaToObject = (schema: ISchema): Record<string, any> => {
     const obj: Record<string, any> = {};
 
     schema.properties.forEach((prop) => {

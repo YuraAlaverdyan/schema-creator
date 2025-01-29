@@ -1,5 +1,5 @@
 import { Box, Checkbox, Collapse, IconButton, TableCell, TableRow } from "@mui/material";
-import { SchemaProperty } from "../../app/types";
+import { ISchemaProperty } from "../../store/types";
 import { IconArrowDown, IconArrowUp } from "@tabler/icons-react";
 
 export default function AttributeRow({
@@ -10,7 +10,7 @@ export default function AttributeRow({
     toggleSelection,
     level = 0,
 }: {
-    row: SchemaProperty;
+    row: ISchemaProperty;
     expandedRows: { [key: string]: boolean };
     selectedIds: string[];
     onExpandClick: (id: string) => void;

@@ -1,16 +1,16 @@
 
-export type SchemaProperty = {
+export interface ISchemaProperty {
   id: string;
   name: string;
   type: string;
   required: boolean;
-  properties?: SchemaProperty[];
+  properties?: ISchemaProperty[];
   description: string;
 };
 
-export type Schema = {
+export interface ISchema {
   id: string;
   name: string;
   version: string;
-  properties: SchemaProperty[];
+  properties: ISchemaProperty[];
 };

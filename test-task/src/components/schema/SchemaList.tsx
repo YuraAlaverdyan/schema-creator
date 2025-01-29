@@ -1,11 +1,10 @@
 import { ReactNode } from "react";
-
 import { Box, TableCell, TableRow, Typography } from "@mui/material";
-import { Schema, SchemaProperty } from "../app/types";
-import { schemaToObject } from "../utils/schema/schemaGenerators";
+import { ISchema, ISchemaProperty } from "../../store/types";
+import { schemaToObject } from "../../utils/schema/schemaGenerators";
 
 type SchemaListProps = {
-  schemas: Schema[];
+  schemas: ISchema[];
   title: string;
 };
 
@@ -14,7 +13,7 @@ export default function SchemaList({ schemas, title }: SchemaListProps) {
     return <p>No schemas created yet.</p>;
   }
 
-  const renderPropertyRow = (prop: SchemaProperty, level = 0): ReactNode => (
+  const renderPropertyRow = (prop: ISchemaProperty, level = 0): ReactNode => (
     <>
       <TableRow key={prop.id + Math.random() * 1000000}>
         <TableCell

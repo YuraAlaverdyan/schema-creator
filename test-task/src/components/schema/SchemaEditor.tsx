@@ -1,13 +1,12 @@
 import { useState } from "react";
-import SchemaForm from "./SchemaForm";
-import SchemaList from "./SchemaList";
 import { Box, Button, CardContent } from "@mui/material";
-import { useAppDispatch, useAppSelector } from "../app/store";
-import { addSchemaToSchemaList } from "../app/features/scheme";
-import { Schema } from "../app/types";
+import { useAppDispatch } from "../../store";
+import { ISchema } from "../../store/types";
+import { addSchemaToSchemaList } from "../../store/features/scheme";
+import SchemaForm from "./SchemaForm";
 
 export default function SchemaEditor() {
-  const [initialSchema, setInitialSchema] = useState<Schema>({
+  const [initialSchema, setInitialSchema] = useState<ISchema>({
     id: `new-${Date.now()}`,
     name: "",
     version: "",
@@ -15,14 +14,13 @@ export default function SchemaEditor() {
   });
   const [isCreating, setIsCreating] = useState(false);
 
-  const { schemas } = useAppSelector((state) => state.scheme);
   const dispatch = useAppDispatch();
 
   const addNewSchema = () => {
     setIsCreating(true);
   };
 
-  const addSchema = (newSchema: Schema) => {
+  const addSchema = (newSchema: ISchema) => {
     dispatch(addSchemaToSchemaList(newSchema));
     setInitialSchema({
       id: `new-${Date.now()}`,
@@ -46,14 +44,6 @@ export default function SchemaEditor() {
         {isCreating && (
           <SchemaForm initialSchema={initialSchema} onSubmit={addSchema} />
         )}
-
-        <Box
-          sx={{
-            marginTop: "25px",
-          }}
-        >
-          <SchemaList schemas={schemas} title="Schema list" />
-        </Box>
       </CardContent>
     </Box>
   );

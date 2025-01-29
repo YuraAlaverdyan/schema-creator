@@ -16,14 +16,14 @@ import {
   Typography,
 } from "@mui/material";
 import { IconPlus, IconX } from "@tabler/icons-react";
-import { SchemaProperty } from "../app/types";
+import { ISchemaProperty } from "../store/types";
 
 type PropertyInputProps = {
   level?: number;
   isEditing?: boolean;
-  existingProperties: SchemaProperty[];
-  setSchemaAttributes: React.Dispatch<React.SetStateAction<SchemaProperty[]>>;
-  onPropertiesChange: (properties: SchemaProperty[]) => void;
+  existingProperties: ISchemaProperty[];
+  setSchemaAttributes: React.Dispatch<React.SetStateAction<ISchemaProperty[]>>;
+  onPropertiesChange: (properties: ISchemaProperty[]) => void;
 };
 
 export default function PropertyInput({
@@ -33,8 +33,8 @@ export default function PropertyInput({
   isEditing = false,
   onPropertiesChange,
 }: PropertyInputProps) {
-  const [properties, setProperties] = useState<SchemaProperty[]>([]);
-  const lastValidProperties = useRef<SchemaProperty[]>([]);
+  const [properties, setProperties] = useState<ISchemaProperty[]>([]);
+  const lastValidProperties = useRef<ISchemaProperty[]>([]);
 
   useEffect(() => {
     const validProperties = properties.filter((prop) => prop.name && prop.type);
@@ -113,7 +113,7 @@ export default function PropertyInput({
 
   const handleNestedPropertiesChange = (
     parentIndex: number,
-    nestedProperties: SchemaProperty[]
+    nestedProperties: ISchemaProperty[]
   ) => {
     const newProperties = [...properties];
     newProperties[parentIndex].properties = nestedProperties;

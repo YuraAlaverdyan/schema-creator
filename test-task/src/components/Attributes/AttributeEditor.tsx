@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { Box, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, IconButton, Button, Typography, Tooltip } from "@mui/material";
-import { IconCode, IconDragDrop, IconEdit, IconGrid3x3, IconPlus, IconTrash } from "@tabler/icons-react";
-import { SchemaProperty } from "../../app/types";
+import { IconCode, IconEdit, IconGrid3x3, IconPlus, IconTrash } from "@tabler/icons-react";
+import { ISchemaProperty } from "../../store/types";
 import AttributeRow from "./AttributeRow";
 
 export default function AttributeTable({
@@ -13,7 +13,7 @@ export default function AttributeTable({
     handleRemoveSelected,
     setIsOpenJsonEditor,
 }: {
-    attributes: SchemaProperty[];
+    attributes: ISchemaProperty[];
     selectedIds: string[];
     addAttribute: (isEdit: boolean) => void;
     toggleSelection: (id: string) => void;
@@ -22,7 +22,6 @@ export default function AttributeTable({
     setIsOpenJsonEditor: React.Dispatch<React.SetStateAction<boolean>>
 }) {
     const [expandedRows, setExpandedRows] = useState<{ [key: string]: boolean }>({});
-    console.log('++++++++++++++++++')
 
     const handleExpandClick = (id: string) => {
         setExpandedRows((prev) => ({

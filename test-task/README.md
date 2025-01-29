@@ -40,12 +40,12 @@ Schema Creator is a powerful web application that allows users to create, manage
 The Schema Creator uses the following TypeScript types to define the structure of schemas and their properties:
 
 ```typescript
-export type SchemaProperty = {
+export type ISchemaProperty = {
   id: string;
   name: string;
   type: string;
   required: boolean;
-  properties?: SchemaProperty[];
+  properties?: ISchemaProperty[];
   description: string;
 };
 
@@ -53,7 +53,7 @@ export type Schema = {
   id: string;
   name: string;
   version: string;
-  properties: SchemaProperty[];
+  properties: ISchemaProperty[];
 };
 ```
 
