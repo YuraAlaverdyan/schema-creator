@@ -1,4 +1,4 @@
-import { FormLabel, Input } from "@mui/material"
+import { Box, FormLabel, Input } from "@mui/material"
 
 type SchemaNameInputProps = {
   value: string
@@ -7,7 +7,7 @@ type SchemaNameInputProps = {
 
 export default function SchemaNameInput({ value, onChange }: SchemaNameInputProps) {
   return (
-    <div className="space-y-2">
+    <Box>
       <FormLabel htmlFor="schema-name">Schema Name</FormLabel>
       <Input
         id="schema-name"
@@ -15,7 +15,7 @@ export default function SchemaNameInput({ value, onChange }: SchemaNameInputProp
         onChange={(e) => onChange(e.target.value)}
         placeholder="Enter schema name"
       />
-    </div>
+    </Box>
   )
 }
 
