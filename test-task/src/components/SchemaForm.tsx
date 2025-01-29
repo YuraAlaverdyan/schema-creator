@@ -16,7 +16,7 @@ export default function SchemaForm({
   initialSchema,
   onSubmit,
 }: SchemaFormProps) {
-  const [schema, setSchema] = useState<Schema>(initialSchema);
+  const [schema, setSchema] = useState<Schema>(JSON.parse(JSON.stringify(initialSchema)));
   const [isOpenModal, setIsOpenModal] = useState<boolean>(false);
   const [isEditing, setIsEditing] = useState<boolean>(false);
   const [selectedIds, setSelectedIds] = useState<string[]>([]);
@@ -186,7 +186,7 @@ export default function SchemaForm({
               overflowY: "scroll",
               display: "flex",
               flexDirection: "column",
-              gap: "30px"
+              gap: "30px",
             }}
           >
             <PropertyInput
@@ -202,11 +202,13 @@ export default function SchemaForm({
               isEditing={isEditing}
               setSchemaAttributes={setSchemaAttributes}
             />
-            <Box sx={{
-                display: 'flex',
+            <Box
+              sx={{
+                display: "flex",
                 gap: "15px",
-                justifyContent: "flex-end"
-            }}>
+                justifyContent: "flex-end",
+              }}
+            >
               <Button variant="outlined" onClick={() => setIsOpenModal(false)}>
                 Close
               </Button>
@@ -217,6 +219,13 @@ export default function SchemaForm({
           </Paper>
         }
       />
+      <Box sx={{
+        display: 'flex',
+        width: '100%',
+        justifyContent: 'flex-end',
+      }}>
+        <Button onClick={() => onSubmit(schema)}>Save schema</Button>
+      </Box>
     </Box>
   );
 }

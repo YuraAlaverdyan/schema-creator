@@ -14,7 +14,7 @@ export default function SchemaList({ schemas }: SchemaListProps) {
 
   const renderPropertyRow = (prop: SchemaProperty, level = 0): ReactNode => (
     <>
-      <TableRow key={prop.name}>
+      <TableRow key={prop.id + Math.random() * 1000000}>
         <TableCell
           className="font-medium"
           style={{ paddingLeft: `${level * 1.5}rem` }}
@@ -42,6 +42,7 @@ export default function SchemaList({ schemas }: SchemaListProps) {
     >
       {schemas.map((schema) => (
         <Box
+          key={schema.id}
           sx={{
             p: 3,
             border: "1px solid black",

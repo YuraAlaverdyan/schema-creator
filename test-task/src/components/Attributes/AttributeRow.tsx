@@ -47,7 +47,7 @@ export default function AttributeRow({
                 <TableRow>
                     <TableCell style={{ paddingBottom: 0, paddingTop: 0 }} colSpan={6}>
                         <Collapse in={expandedRows[row.id]} timeout="auto" unmountOnExit>
-                            <Box>
+                            <Box sx={{width: "100%"}}>
                                 {row.properties.map((childRow) => (
                                     <AttributeRow
                                         key={childRow.id}

@@ -17,6 +17,9 @@ export const schemeSlice = createSlice({
     addSchemaToList: (state, action: PayloadAction<Schema>) => {
       state.schemas = [action.payload];
     },
+    addSchemaToSchemaList: (state, action: PayloadAction<Schema>) => {
+      state.schemas = [...state.schemas, action.payload];
+    },
     deleteSchemaFromList: (state, action: PayloadAction<string>) => {
       state.schemas = state.schemas.filter((s) => s.id !== action.payload);
     },
@@ -36,6 +39,7 @@ export const schemeSlice = createSlice({
 export const {
   addSchemaToList,
   deleteSchemaFromList,
+  addSchemaToSchemaList,
   resetAllAtributesFromSchema,
 } = schemeSlice.actions;
 

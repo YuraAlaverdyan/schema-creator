@@ -130,6 +130,7 @@ export default function PropertyInput({
     >
       {properties.map((property, index) => (
         <Paper
+          key={property.id}
           elevation={2}
           sx={{
             p: 3,

@@ -3,7 +3,7 @@ import SchemaForm from "./SchemaForm";
 import SchemaList from "./SchemaList";
 import { Box, Button, CardContent } from "@mui/material";
 import { useAppDispatch, useAppSelector } from "../app/store";
-import { addSchemaToList } from "../app/features/scheme";
+import { addSchemaToSchemaList } from "../app/features/scheme";
 import { Schema } from "../app/types";
 
 export default function SchemaEditor() {
@@ -17,7 +17,7 @@ export default function SchemaEditor() {
   };
 
   const addSchema = (newSchema: Schema) => {
-    dispatch(addSchemaToList(newSchema));
+    dispatch(addSchemaToSchemaList(newSchema));
   };
 
   return (
