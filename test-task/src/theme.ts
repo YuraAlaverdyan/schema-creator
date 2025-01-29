@@ -19,4 +19,10 @@ export const theme = createTheme({
         },
       },
     },
+    palette: {
+      background: {
+        default: "#f5f5f5",
+        paper: "#ffffff",
+      },
+    },
   })
