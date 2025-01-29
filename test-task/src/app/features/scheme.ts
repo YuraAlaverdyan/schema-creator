@@ -15,7 +15,7 @@ export const schemeSlice = createSlice({
   initialState,
   reducers: {
     addSchemaToList: (state, action: PayloadAction<Schema>) => {
-      state.schemas = [...state.schemas, action.payload];
+      state.schemas = [action.payload];
     },
     deleteSchemaFromList: (state, action: PayloadAction<string>) => {
       state.schemas = state.schemas.filter((s) => s.id !== action.payload);

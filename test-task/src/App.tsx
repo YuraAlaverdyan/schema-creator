@@ -1,7 +1,7 @@
 import { CssBaseline, ThemeProvider } from '@mui/material'
-import './App.css'
 import SchemaEditor from './components/SchemaEditor'
 import { theme } from './theme'
+import './App.css'
 
 function App() {
 
